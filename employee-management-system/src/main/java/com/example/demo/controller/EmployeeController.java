@@ -1,91 +1,42 @@
-package com.example.demo.controller;
+package com.example.employee;
 
-// TODO: Import Spring annotations
-// Hint:
-// @RestController, @RequestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping
+import java.util.List;
+import java.util.Optional;
 
-// TODO: Import Employee + Repository
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("/employee")
 public class EmployeeController {
 
-    // TODO: Inject repository
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
-    // Hint:
-    // Use constructor injection OR @Autowired
-
-    // ==============================
-    // 1. CREATE EMPLOYEE
-    // ==============================
-    public Employee saveEmployee() {
-
-        // TODO:
-        // Accept Employee using @RequestBody
-
-        // TODO:
-        // Save using repository
-
-        // Hint:
-        // repo.save(employee)
-
-        return null;
+    @PostMapping("/save")
+    public Employee saveEmployee(@RequestBody Employee employee) {
+        return employeeRepository.save(employee);
     }
 
-    // ==============================
-    // 2. GET ALL EMPLOYEES
-    // ==============================
+    @GetMapping("/all")
     public List<Employee> getAllEmployees() {
-
-        // TODO:
-        // Return repo.findAll()
-
-        return null;
+        return employeeRepository.findAll();
     }
 
-    // ==============================
-    // 3. GET EMPLOYEE BY ID
-    // ==============================
-    public Employee getEmployeeById() {
-
-        // TODO:
-        // Use @PathVariable
-
-        // TODO:
-        // repo.findById(id)
-
-        // Hint:
-        // returns Optional → handle safely
-
-        return null;
+    @GetMapping("/{id}")
+    public Optional<Employee> getEmployeeById(@PathVariable int id) {
+        return employeeRepository.findById(id);
     }
 
-    // ==============================
-    // 4. UPDATE EMPLOYEE
-    // ==============================
-    public Employee updateEmployee() {
-
-        // TODO:
-        // Step 1: Find employee by id
-        // Step 2: Check if exists
-        // Step 3: Update fields
-        // Step 4: Save again
-
-        // Hint:
-        // repo.save(existingEmployee)
-
-        return null;
+    @PutMapping("/update/{id}")
+    public Employee updateEmployee(@PathVariable int id, @RequestBody Employee updatedEmployee) {
+        updatedEmployee.setId(id);
+        return employeeRepository.save(updatedEmployee);
     }
 
-    // ==============================
-    // 5. DELETE EMPLOYEE
-    // ==============================
-    public String deleteEmployee() {
-
-        // TODO:
-        // Delete by id
-
-        // Hint:
-        // repo.deleteById(id)
-
-        return null;
+    @DeleteMapping("/delete/{id}")
+    public String deleteEmployee(@PathVariable int id) {
+        employeeRepository.deleteById(id);
+        return "Employee deleted successfully!";
     }
 }
